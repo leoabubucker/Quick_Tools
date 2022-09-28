@@ -1,56 +1,31 @@
-from time import sleep
-import os
-import concurrent.futures
+from time import sleep #Sleep Delay
+import os #Clear Screen
+import concurrent.futures #Threading
 
-#global abc 
-#abc = 0
+#Global Definition For Use Across Program
 global user_input
 user_input = ""
-#print("abc init = ",abc)
-#if("abc" in globals()):
-#    print("abc is global")
-#print(abc, "a")
-#print("hi")
+#Program Functions
 def input_listen():
+    #Threaded Function to Simultaneously Check User Input 
     global user_input
     user_input = ""
-    #print("enter thread")
     listening = True;
-    #abc = 0
-    #x=0
-    #print(abc, "b")
     while listening:
-        #print("THREADING LISTEN")
-        #print("X = ", x)
-        #sleep(1)
-        #x+=1
-        #print("abc = ", abc)
-        #sleep(1)
         if(user_input.lower() == "r"):
-            #print("THREADING RESTART")
             print("Restarting Program...")
             restartProgram(2, 'start')
             return "Restart"
-    #print("exit thread without entering loop")
-def startProgram():
-    global user_input
-    #print("enter startprogram")
-    #global abc
-    #abc= 1
-    #print("Abc = ",  abc)
-    #print("Abc = ", abc)
-    #print(abc, "c")
-    #user_input = "r"
-    #print(type(user_input), "1")
-    #print(user_input)
 
-    #Working Code
+def startProgram():
+    #Initial Request for User Input to Direct to Appropriate Subprograms
+    global user_input
+
     tools_list = ['Conversions Program','Slope Calculator ', 'Inverse Calculator','More Tools Coming Soon']
     print("Welcome to the Quick Tools Program.")
     print("At any time, type 'R' to restart the program completely, type 'B' to restart the individual subprogram you are in.")
     user_input = input(f"Which tool do you want to run (respond with the appropriate numeric selector): \n{ [i for i in enumerate_from_1(tools_list)]} ")
-    #print(user_input)
-    #print(type(user_input), "2")
+
     if(user_input == '1'):
         print("Starting Conversion Program")
         restartProgram(2, 'convert')
@@ -67,31 +42,14 @@ def startProgram():
         print("Invalid User Input. Please type the appropriate numeric selector for your chosen tool. \nRestarting Program")
         restartProgram(2, 'start')
 
-
-
 def conversionProgram():
+    #Program to Run Multiple Conversions
+    converters_list = ['Base to Base Conversions (i.e binary to decimal)']
+
     #Conversion Functions
 
-    #Binary to Decimal
-    #def binary_to_decimal(binary):
-    #    print(f"Binary Number: {binary}")
-    #    try:
-    #        return int(str(binary), 2)
-    #    except ValueError:
-    #        print("Please ensure your number is in binary. \n Restarting Program...")
-    #        restartProgram(2, 'convert')
-
-    ##Decimal to Binary
-    #def decimal_to_binary(decimal):
-    #    print(f"Decimal Number: {decimal} ")
-    #    try:
-    #        return bin(decimal)
-    #    except ValueError:
-    #        print("Please ensure your number is in decimal. \n Restarting Program...")
-    #        restartProgram(2, 'convert')
-
-    #Base to Base
     def base_to_base(init_number, init_base, conv_base):
+        #Converts a number from one base to the appropriate number in another base
         num_digits = -1
         ind_digits = []
         mult_digits = []
@@ -104,8 +62,6 @@ def conversionProgram():
            num_digits -=1;
         for i in mult_digits:
             decimal_conv += i;
-        #if(conv_base == 10):
-        #   return decimal_conv
     
         quotients_list = []
         remainders_list = []
@@ -113,28 +69,23 @@ def conversionProgram():
         r = int(decimal_conv % conv_base)
         quotients_list.append(q)
         remainders_list.append(r)
-        #print(quotients_list, remainders_list)
+
         while q != 0:
             r =  q % conv_base
             q /= conv_base
             quotients_list.append(int(q))
             remainders_list.append(int(r))
-            #print(quotients_list, remainders_list)
     
         conv_factor = 1
         remainder_total = 0
-        #test_lst = [8,4,2, 1]
         for  i in remainders_list:
             remainder_total += i * conv_factor
             conv_factor *= 10
-        #print(remainder_total)
 
         if(conv_base == 10):
             return decimal_conv
         else:
             return remainder_total
-    #print(f" 200 (base 11) to base 2: {base_to_base(200, 11, 2)}")
-    converters_list = ['Base to Base Conversions (i.e binary to decimal)']
 
     #Program Run
     global user_input
@@ -149,13 +100,6 @@ def conversionProgram():
             print("Please ensure your number is an integer. \n Restarting Program...")
             restartProgram(2, 'convert')
         print(f" {init_number} (base {init_base} to base {conv_base}: {base_to_base(init_number, init_base, conv_base)}")
-    #elif(user_input == '2'):
-    #    try:
-    #        decimal_input = int(input("What decimal number do you wish to convert to binary? \n"))
-    #    except ValueError:
-    #        print("Please ensure your number is in binary. \n Restarting Program...")
-    #        restartProgram(2, 'convert')
-    #    print(f"Binary Number: {decimal_to_binary(decimal_input)[2::]}")
     elif(user_input.lower() == "b"):
         print("Restarting Subprogram")
         restartProgram(2, 'convert')
@@ -171,28 +115,19 @@ def slopeProgram():
         pointlst.append(y1)
         pointlst.append(x2)
         pointlst.append(x1)
-        #print(pointlst)
+ 
         for i in pointlst:
             if(i.lower() == "r"):
                 print("Restarting Program...")
                 restartProgram(2, 'start')
-            #elif(i.lower() == 'b'):
-            #    print("Restarting Subprogram...")
-            #    restartProgram(2, 'slope')
             elif(i.replace('.', '').replace('-', '').isnumeric() == False):
                 print("Invalid user input, please only use integers or decimals. \nRestarting Subprogram...")
                 restartProgram(2, 'slope')
             elif(i.count('.') == 0):
-                #print("int")
                 numlst.append(int(i))
             elif(i.count('.') == 1):
-                #print("float")
                 numlst.append(float(i))
-            #else:
-            #    print("Invalid user input, please only use integers or decimals. \nRestarting Subprogram...")
-            #    restartProgram(2, 'slope')
-        #print(numlst)
-        #print((numlst[0] - numlst[1]) / (numlst[2] - numlst[3]))
+
         return (numlst[0] - numlst[1]) / (numlst[2] - numlst[3])
     def calcSlopeCoords(coord1, coord2):
         init_coordlst= []
@@ -200,16 +135,15 @@ def slopeProgram():
         init_coordlst.append(coord1)
         init_coordlst.append(coord2)
         for i in init_coordlst:
-          #print(i)
           coordv1=  i.replace('(', '')
           coordv2=  coordv1.replace(')', '')
           coordv3 = coordv2.split(", ")
           coordlst.extend(coordv3)
-          #print(coordlst)
+
         return calcSlopePoints(coordlst[3], coordlst[1], coordlst[2], coordlst[0])
+
     global user_input
     user_input = input("Do you want to input \n1. 2 coordinates \n2. The values of y2, y1, x2, and x1?")
-    #print(user_input)
     if(user_input == "1"):
         coord1 = input("First coordinate in the following form (x, y): ")
         coord2 = input("Second coordinate in the following form (x, y): ")
@@ -233,6 +167,7 @@ def slopeProgram():
     elif(user_input.lower() != 'r'):
         print("Please ensure that you only entered the numeric selector for the given choices. \nRestarting Subprogram...")
         restartProgram(2, 'slope')
+
 #General Functions
 def clear_screen():
     #Clears Windows 
@@ -244,6 +179,7 @@ def clear_screen():
         _ = os.system('clear')
 
 def restartProgram(sleep_time, programName):
+    #Restarts the inputted program with an inputted sleep delay
     sleep(sleep_time)
     clear_screen()
     sleep(sleep_time)
@@ -255,22 +191,17 @@ def restartProgram(sleep_time, programName):
         slopeProgram()
 
 def enumerate_from_1(lst):
+    #Takes an inputted list and enumerates it from 1
    list_enumerated = []
    for index, converter in enumerate(lst):
        list_enumerated.append(f"{index + 1}. {converter}")
    return list_enumerated
 
-
-
-#t1 = threading.Thread(target=input_listen)
-#t1.start()
 def initProgram():
+    #Starts threading and then calls the main program 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         f1 = executor.submit(input_listen)
-        #abc+=1
         startProgram()
-        #print("Result = ", f1.result())
-        #if(f1.result() == "Restart"):
 
 #Program Start Call
 initProgram()
